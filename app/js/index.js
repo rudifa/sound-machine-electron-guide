@@ -18,3 +18,4 @@ function prepareButton(buttonEl, soundName) {
         audio.play();
     });
 }
+
