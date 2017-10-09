@@ -3,6 +3,7 @@
 var app = require('electron').app
 var BrowserWindow = require('electron').BrowserWindow
 
+
 var mainWindow = null;
 
 app.on('ready', function() {
@@ -11,5 +12,5 @@ app.on('ready', function() {
         width: 800
     });
 
-    mainWindow.loadURL('file://' + __dirname + '/app/index.html');
+	mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 });
