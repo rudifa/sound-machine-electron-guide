@@ -5,6 +5,8 @@ var BrowserWindow = require('electron').BrowserWindow
 var mainWindow = null;
 const {globalShortcut} = require('electron');
 
+var globalShortcut = require('global-shortcut');
+
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
         frame: false,
@@ -13,15 +15,14 @@ app.on('ready', function() {
         width: 368
     });
 
+    mainWindow.loadURL('file://' + __dirname + '/app/index.html');
+
     globalShortcut.register('ctrl+shift+1', function () {
         mainWindow.webContents.send('global-shortcut', 0);
     });
     globalShortcut.register('ctrl+shift+2', function () {
         mainWindow.webContents.send('global-shortcut', 1);
     });
-
-    mainWindow.loadURL('file://' + __dirname + '/app/index.html');
-
 });
 
 const {ipcMain} = require('electron')

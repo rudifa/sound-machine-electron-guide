@@ -30,3 +30,4 @@ ipcRenderer.on('global-shortcut', function (event, arg) {
     var myEvent = new MouseEvent('click');
     soundButtons[arg].dispatchEvent(myEvent);
 });
+
