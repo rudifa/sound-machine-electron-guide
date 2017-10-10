@@ -5,8 +5,9 @@ var BrowserWindow = require('electron').BrowserWindow
 var mainWindow = null;
 const {globalShortcut} = require('electron');
 var configuration = require('./configuration');
+const {ipcMain} = require('electron')
+var settingsWindow = null;
 
-var configuration = require('./configuration');
 
 app.on('ready', function() {
     if (!configuration.readSettings('shortcutKeys')) {
@@ -17,7 +18,7 @@ app.on('ready', function() {
         frame: false,
         resizable: false,
         height: 700,
-        width: 368
+        width: 400
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
@@ -42,12 +43,9 @@ function setGlobalShortcuts() {
     });
 }
 
-const {ipcMain} = require('electron')
 ipcMain.on('close-main-window', (event, arg) => {
     app.quit();
 });
-
-var settingsWindow = null;
 
 ipcMain.on('open-settings-window', function () {
     if (settingsWindow) {

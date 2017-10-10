@@ -1,6 +1,14 @@
 'use strict';
 
+const {ipcRenderer} = require('electron')
+var {Menu, Tray} = require('electron').remote;
+var path = require('path');
+
 var soundButtons = document.querySelectorAll('.button-sound');
+var closeEl = document.querySelector('.close');
+var settingsEl = document.querySelector('.settings');
+var trayIcon = null;
+var trayMenu = null;
 
 for (var i = 0; i < soundButtons.length; i++) {
     var soundButton = soundButtons[i];
@@ -19,9 +27,6 @@ function prepareButton(buttonEl, soundName) {
     });
 }
 
-const {ipcRenderer} = require('electron')
-
-var closeEl = document.querySelector('.close');
 closeEl.addEventListener('click', function () {
     ipcRenderer.send('close-main-window');
 });
@@ -31,18 +36,11 @@ ipcRenderer.on('global-shortcut', function (event, arg) {
     soundButtons[arg].dispatchEvent(myEvent);
 });
 
-var settingsEl = document.querySelector('.settings');
-
 settingsEl.addEventListener('click', function () {
     ipcRenderer.send('open-settings-window');
 });
 
 // add a menu to the tray icon
-
-var {Menu, Tray} = require('electron').remote;
-var path = require('path');
-
-var trayIcon = null;
 
 if (process.platform === 'darwin') {
     trayIcon = new Tray(path.join(__dirname, 'img/tray-iconTemplate.png'));
@@ -70,6 +68,6 @@ var trayMenuTemplate = [
     }
 ];
 
-var trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
+trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
 trayIcon.setContextMenu(trayMenu);
 
