@@ -23,6 +23,9 @@ app.on('ready', function() {
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
     setGlobalShortcuts();
+
+    mainWindow.webContents.openDevTools({mode: 'detach'})
+
 });
 
 function setGlobalShortcuts() {
