@@ -1,9 +1,11 @@
-'use strict'
+'use strict';
 
 var app = require('electron').app
 var BrowserWindow = require('electron').BrowserWindow
 var mainWindow = null;
 const {globalShortcut} = require('electron');
+var configuration = require('./configuration');
+
 var configuration = require('./configuration');
 
 app.on('ready', function() {
@@ -20,9 +22,22 @@ app.on('ready', function() {
 
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
-    setGlobalShortcuts()
-
+    setGlobalShortcuts();
 });
+
+function setGlobalShortcuts() {
+    globalShortcut.unregisterAll();
+
+    var shortcutKeysSetting = configuration.readSettings('shortcutKeys');
+    var shortcutPrefix = shortcutKeysSetting.length === 0 ? '' : shortcutKeysSetting.join('+') + '+';
+
+    globalShortcut.register(shortcutPrefix + '1', function () {
+        mainWindow.webContents.send('global-shortcut', 0);
+    });
+    globalShortcut.register(shortcutPrefix + '2', function () {
+        mainWindow.webContents.send('global-shortcut', 1);
+    });
+}
 
 const {ipcMain} = require('electron')
 ipcMain.on('close-main-window', (event, arg) => {
@@ -73,3 +88,4 @@ function setGlobalShortcuts() {
 ipcMain.on('set-global-shortcuts', function () {
     setGlobalShortcuts();
 });
+

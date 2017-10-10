@@ -20,3 +20,4 @@ module.exports = {
     saveSettings: saveSettings,
     readSettings: readSettings
 };
+
