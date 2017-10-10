@@ -5,8 +5,6 @@ var BrowserWindow = require('electron').BrowserWindow
 var mainWindow = null;
 const {globalShortcut} = require('electron');
 
-var globalShortcut = require('global-shortcut');
-
 app.on('ready', function() {
     mainWindow = new BrowserWindow({
         frame: false,
