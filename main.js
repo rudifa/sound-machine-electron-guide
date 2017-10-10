@@ -24,8 +24,8 @@ app.on('ready', function() {
 
     setGlobalShortcuts();
 
-    mainWindow.webContents.openDevTools({mode: 'detach'})
-
+    // uncomment to enable console.log() from renderer processes to DevTools console
+    //mainWindow.webContents.openDevTools({mode: 'detach'})
 });
 
 function setGlobalShortcuts() {
@@ -73,20 +73,6 @@ ipcMain.on('close-settings-window', function () {
         settingsWindow.close();
     }
 });
-
-function setGlobalShortcuts() {
-    globalShortcut.unregisterAll();
-
-    var shortcutKeysSetting = configuration.readSettings('shortcutKeys');
-    var shortcutPrefix = shortcutKeysSetting.length === 0 ? '' : shortcutKeysSetting.join('+') + '+';
-
-    globalShortcut.register(shortcutPrefix + '1', function () {
-        mainWindow.webContents.send('global-shortcut', 0);
-    });
-    globalShortcut.register(shortcutPrefix + '2', function () {
-        mainWindow.webContents.send('global-shortcut', 1);
-    });
-}
 
 ipcMain.on('set-global-shortcuts', function () {
     setGlobalShortcuts();

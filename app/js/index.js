@@ -32,6 +32,7 @@ ipcRenderer.on('global-shortcut', function (event, arg) {
 });
 
 var settingsEl = document.querySelector('.settings');
+
 settingsEl.addEventListener('click', function () {
     ipcRenderer.send('open-settings-window');
 });
@@ -45,7 +46,6 @@ var trayIcon = null;
 
 if (process.platform === 'darwin') {
     trayIcon = new Tray(path.join(__dirname, 'img/tray-iconTemplate.png'));
-    console.log(__dirname)
 }
 else {
     trayIcon = new Tray(path.join(__dirname, 'img/tray-icon-alt.png'));
@@ -69,5 +69,7 @@ var trayMenuTemplate = [
         }
     }
 ];
+
 var trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
 trayIcon.setContextMenu(trayMenu);
+
