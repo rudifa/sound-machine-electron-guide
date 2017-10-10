@@ -31,3 +31,8 @@ ipcRenderer.on('global-shortcut', function (event, arg) {
     soundButtons[arg].dispatchEvent(myEvent);
 });
 
+var settingsEl = document.querySelector('.settings');
+settingsEl.addEventListener('click', function () {
+    ipcRenderer.send('open-settings-window');
+});
+
