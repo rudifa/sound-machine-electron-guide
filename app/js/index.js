@@ -2,11 +2,13 @@
 
 const {ipcRenderer} = require('electron')
 var {Menu, Tray} = require('electron').remote;
+
 var path = require('path');
 
 var soundButtons = document.querySelectorAll('.button-sound');
 var closeEl = document.querySelector('.close');
 var settingsEl = document.querySelector('.settings');
+
 var trayIcon = null;
 var trayMenu = null;
 

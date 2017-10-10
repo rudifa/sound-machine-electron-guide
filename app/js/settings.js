@@ -2,9 +2,10 @@
 
 const {ipcRenderer} = require('electron')
 var configuration = require('../configuration.js');
-var modifierCheckboxes = document.querySelectorAll('.global-shortcut');
 
+var modifierCheckboxes = document.querySelectorAll('.global-shortcut');
 var closeEl = document.querySelector('.close');
+
 closeEl.addEventListener('click', function (e) {
     ipcRenderer.send('close-settings-window');
 });

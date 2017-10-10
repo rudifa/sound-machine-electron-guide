@@ -8,7 +8,6 @@ var configuration = require('./configuration');
 const {ipcMain} = require('electron')
 var settingsWindow = null;
 
-
 app.on('ready', function() {
     if (!configuration.readSettings('shortcutKeys')) {
         configuration.saveSettings('shortcutKeys', ['ctrl', 'shift']);
@@ -48,6 +47,7 @@ ipcMain.on('close-main-window', (event, arg) => {
 });
 
 ipcMain.on('open-settings-window', function () {
+
     if (settingsWindow) {
         return;
     }
