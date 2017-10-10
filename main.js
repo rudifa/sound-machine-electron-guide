@@ -54,3 +54,4 @@ ipcMain.on('close-settings-window', function () {
         settingsWindow.close();
     }
 });
+

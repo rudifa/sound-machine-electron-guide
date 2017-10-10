@@ -35,4 +35,3 @@ var settingsEl = document.querySelector('.settings');
 settingsEl.addEventListener('click', function () {
     ipcRenderer.send('open-settings-window');
 });
-
