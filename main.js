@@ -1,29 +1,28 @@
 'use strict';
 
-var app = require('app');
-var BrowserWindow = require('browser-window');
-var globalShortcut = require('global-shortcut');
-var configuration = require('./configuration');
-var ipc = require('ipc');
-
+const {app, BrowserWindow, globalShortcut, ipcMain} = require('electron');
 var mainWindow = null;
+var configuration = require('./configuration');
 var settingsWindow = null;
 
-app.on('ready', function() {
+app.on('ready', () => {
     if (!configuration.readSettings('shortcutKeys')) {
         configuration.saveSettings('shortcutKeys', ['ctrl', 'shift']);
     }
 
     mainWindow = new BrowserWindow({
         frame: false,
-        height: 700,
         resizable: false,
+        height: 700,
         width: 368
     });
 
-    mainWindow.loadUrl('file://' + __dirname + '/app/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/app/index.html');
 
     setGlobalShortcuts();
+
+    // uncomment to enable console.log() from renderer processes to DevTools console
+    //mainWindow.webContents.openDevTools({mode: 'detach'})
 });
 
 function setGlobalShortcuts() {
@@ -32,19 +31,20 @@ function setGlobalShortcuts() {
     var shortcutKeysSetting = configuration.readSettings('shortcutKeys');
     var shortcutPrefix = shortcutKeysSetting.length === 0 ? '' : shortcutKeysSetting.join('+') + '+';
 
-    globalShortcut.register(shortcutPrefix + '1', function () {
+    globalShortcut.register(shortcutPrefix + '1', () => {
         mainWindow.webContents.send('global-shortcut', 0);
     });
-    globalShortcut.register(shortcutPrefix + '2', function () {
+    globalShortcut.register(shortcutPrefix + '2', () => {
         mainWindow.webContents.send('global-shortcut', 1);
     });
 }
 
-ipc.on('close-main-window', function () {
+ipcMain.on('close-main-window', (event, arg) => {
     app.quit();
 });
 
-ipc.on('open-settings-window', function () {
+ipcMain.on('open-settings-window', () => {
+
     if (settingsWindow) {
         return;
     }
@@ -56,19 +56,20 @@ ipc.on('open-settings-window', function () {
         width: 200
     });
 
-    settingsWindow.loadUrl('file://' + __dirname + '/app/settings.html');
+    settingsWindow.loadURL('file://' + __dirname + '/app/settings.html');
 
-    settingsWindow.on('closed', function () {
+    settingsWindow.on('closed', () => {
         settingsWindow = null;
     });
 });
 
-ipc.on('close-settings-window', function () {
+ipcMain.on('close-settings-window', () => {
     if (settingsWindow) {
         settingsWindow.close();
     }
 });
 
-ipc.on('set-global-shortcuts', function () {
+ipcMain.on('set-global-shortcuts', () => {
     setGlobalShortcuts();
 });
+

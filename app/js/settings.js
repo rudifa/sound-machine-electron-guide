@@ -1,13 +1,13 @@
 'use strict';
 
-var ipc = require('ipc');
-var configuration = require('../configuration');
+const {ipcRenderer} = require('electron')
+var configuration = require('../configuration.js');
 
 var modifierCheckboxes = document.querySelectorAll('.global-shortcut');
 var closeEl = document.querySelector('.close');
 
-closeEl.addEventListener('click', function (e) {
-    ipc.send('close-settings-window');
+closeEl.addEventListener('click', (e) => {
+    ipcRenderer.send('close-settings-window');
 });
 
 for (var i = 0; i < modifierCheckboxes.length; i++) {
@@ -15,7 +15,7 @@ for (var i = 0; i < modifierCheckboxes.length; i++) {
     var modifierKey = modifierCheckboxes[i].attributes['data-modifier-key'].value;
     modifierCheckboxes[i].checked = shortcutKeys.indexOf(modifierKey) !== -1;
 
-    modifierCheckboxes[i].addEventListener('click', function (e) {
+    modifierCheckboxes[i].addEventListener('click', (e) => {
         bindModifierCheckboxes(e);
     });
 }
@@ -33,5 +33,5 @@ function bindModifierCheckboxes(e) {
     }
 
     configuration.saveSettings('shortcutKeys', shortcutKeys);
-    ipc.send('set-global-shortcuts');
+    ipcRenderer.send('set-global-shortcuts');
 }

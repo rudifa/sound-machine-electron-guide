@@ -1,9 +1,8 @@
 'use strict';
 
-var ipc = require('ipc');
-var remote = require('remote');
-var Tray = remote.require('tray');
-var Menu = remote.require('menu');
+const {ipcRenderer} = require('electron')
+const {Menu, Tray} = require('electron').remote;
+
 var path = require('path');
 
 var soundButtons = document.querySelectorAll('.button-sound');
@@ -24,24 +23,26 @@ function prepareButton(buttonEl, soundName) {
     buttonEl.querySelector('span').style.backgroundImage = 'url("img/icons/' + soundName + '.png")';
 
     var audio = new Audio(__dirname + '/wav/' + soundName + '.wav');
-    buttonEl.addEventListener('click', function () {
+    buttonEl.addEventListener('click', () => {
         audio.currentTime = 0;
         audio.play();
     });
 }
 
-closeEl.addEventListener('click', function () {
-    ipc.send('close-main-window');
+closeEl.addEventListener('click', () => {
+    ipcRenderer.send('close-main-window');
 });
 
-settingsEl.addEventListener('click', function () {
-    ipc.send('open-settings-window');
+ipcRenderer.on('global-shortcut', (event, arg) => {
+    var myEvent = new MouseEvent('click');
+    soundButtons[arg].dispatchEvent(myEvent);
 });
 
-ipc.on('global-shortcut', function (arg) {
-    var event = new MouseEvent('click');
-    soundButtons[arg].dispatchEvent(event);
+settingsEl.addEventListener('click', () => {
+    ipcRenderer.send('open-settings-window');
 });
+
+// add a menu to the tray icon
 
 if (process.platform === 'darwin') {
     trayIcon = new Tray(path.join(__dirname, 'img/tray-iconTemplate.png'));
@@ -58,15 +59,17 @@ var trayMenuTemplate = [
     {
         label: 'Settings',
         click: function () {
-            ipc.send('open-settings-window');
+            ipcRenderer.send('open-settings-window');
         }
     },
     {
         label: 'Quit',
         click: function () {
-            ipc.send('close-main-window');
+            ipcRenderer.send('close-main-window');
         }
     }
 ];
+
 trayMenu = Menu.buildFromTemplate(trayMenuTemplate);
 trayIcon.setContextMenu(trayMenu);
+
