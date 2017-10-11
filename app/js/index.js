@@ -1,7 +1,7 @@
 'use strict';
 
 const {ipcRenderer} = require('electron')
-var {Menu, Tray} = require('electron').remote;
+const {Menu, Tray} = require('electron').remote;
 
 var path = require('path');
 

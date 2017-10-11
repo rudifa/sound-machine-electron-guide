@@ -1,11 +1,8 @@
 'use strict';
 
-var app = require('electron').app
-var BrowserWindow = require('electron').BrowserWindow
+const {app, BrowserWindow, globalShortcut, ipcMain} = require('electron');
 var mainWindow = null;
-const {globalShortcut} = require('electron');
 var configuration = require('./configuration');
-const {ipcMain} = require('electron')
 var settingsWindow = null;
 
 app.on('ready', function() {
@@ -17,7 +14,7 @@ app.on('ready', function() {
         frame: false,
         resizable: false,
         height: 700,
-        width: 400
+        width: 368
     });
 
     mainWindow.loadURL('file://' + __dirname + '/app/index.html');
