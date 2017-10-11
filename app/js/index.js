@@ -23,22 +23,22 @@ function prepareButton(buttonEl, soundName) {
     buttonEl.querySelector('span').style.backgroundImage = 'url("img/icons/' + soundName + '.png")';
 
     var audio = new Audio(__dirname + '/wav/' + soundName + '.wav');
-    buttonEl.addEventListener('click', function () {
+    buttonEl.addEventListener('click', () => {
         audio.currentTime = 0;
         audio.play();
     });
 }
 
-closeEl.addEventListener('click', function () {
+closeEl.addEventListener('click', () => {
     ipcRenderer.send('close-main-window');
 });
 
-ipcRenderer.on('global-shortcut', function (event, arg) {
+ipcRenderer.on('global-shortcut', (event, arg) => {
     var myEvent = new MouseEvent('click');
     soundButtons[arg].dispatchEvent(myEvent);
 });
 
-settingsEl.addEventListener('click', function () {
+settingsEl.addEventListener('click', () => {
     ipcRenderer.send('open-settings-window');
 });
 

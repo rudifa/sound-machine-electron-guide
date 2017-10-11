@@ -6,7 +6,7 @@ var configuration = require('../configuration.js');
 var modifierCheckboxes = document.querySelectorAll('.global-shortcut');
 var closeEl = document.querySelector('.close');
 
-closeEl.addEventListener('click', function (e) {
+closeEl.addEventListener('click', (e) => {
     ipcRenderer.send('close-settings-window');
 });
 
@@ -15,7 +15,7 @@ for (var i = 0; i < modifierCheckboxes.length; i++) {
     var modifierKey = modifierCheckboxes[i].attributes['data-modifier-key'].value;
     modifierCheckboxes[i].checked = shortcutKeys.indexOf(modifierKey) !== -1;
 
-    modifierCheckboxes[i].addEventListener('click', function (e) {
+    modifierCheckboxes[i].addEventListener('click', (e) => {
         bindModifierCheckboxes(e);
     });
 }

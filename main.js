@@ -5,7 +5,7 @@ var mainWindow = null;
 var configuration = require('./configuration');
 var settingsWindow = null;
 
-app.on('ready', function() {
+app.on('ready', () => {
     if (!configuration.readSettings('shortcutKeys')) {
         configuration.saveSettings('shortcutKeys', ['ctrl', 'shift']);
     }
@@ -31,10 +31,10 @@ function setGlobalShortcuts() {
     var shortcutKeysSetting = configuration.readSettings('shortcutKeys');
     var shortcutPrefix = shortcutKeysSetting.length === 0 ? '' : shortcutKeysSetting.join('+') + '+';
 
-    globalShortcut.register(shortcutPrefix + '1', function () {
+    globalShortcut.register(shortcutPrefix + '1', () => {
         mainWindow.webContents.send('global-shortcut', 0);
     });
-    globalShortcut.register(shortcutPrefix + '2', function () {
+    globalShortcut.register(shortcutPrefix + '2', () => {
         mainWindow.webContents.send('global-shortcut', 1);
     });
 }
@@ -43,7 +43,7 @@ ipcMain.on('close-main-window', (event, arg) => {
     app.quit();
 });
 
-ipcMain.on('open-settings-window', function () {
+ipcMain.on('open-settings-window', () => {
 
     if (settingsWindow) {
         return;
@@ -58,18 +58,18 @@ ipcMain.on('open-settings-window', function () {
 
     settingsWindow.loadURL('file://' + __dirname + '/app/settings.html');
 
-    settingsWindow.on('closed', function () {
+    settingsWindow.on('closed', () => {
         settingsWindow = null;
     });
 });
 
-ipcMain.on('close-settings-window', function () {
+ipcMain.on('close-settings-window', () => {
     if (settingsWindow) {
         settingsWindow.close();
     }
 });
 
-ipcMain.on('set-global-shortcuts', function () {
+ipcMain.on('set-global-shortcuts', () => {
     setGlobalShortcuts();
 });
 
